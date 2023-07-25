@@ -585,6 +585,8 @@ def fig_summary_1(x):
                    size=14)
     plt.tight_layout()
     plt.savefig('../figures/fit_summary_grp_' + str(grp) + '_mod_' +
+                str(model) + '.tif')
+    plt.savefig('../figures/fit_summary_grp_' + str(grp) + '_mod_' +
                 str(model) + '.pdf')
     plt.close()
 
@@ -649,6 +651,7 @@ def inspect_model_fits(g, g_lab):
     ax[0, 0].set_xticklabels(g_lab)
     ax[0, 0].invert_xaxis()
     plt.tight_layout()
+    plt.savefig('../figures/fig_mod_bic.tif')
     plt.savefig('../figures/fig_mod_bic.pdf')
     plt.close()
 
@@ -740,6 +743,7 @@ def inspect_model_fits(g, g_lab):
                        xycoords='axes fraction',
                        size=14)
         plt.tight_layout()
+        plt.savefig('../figures/fig_mod_pred_grp_' + str(g) + '.tif')
         plt.savefig('../figures/fig_mod_pred_grp_' + str(g) + '.pdf')
         plt.close()
 
@@ -1049,7 +1053,13 @@ def inspect_hit_miss(d):
 
 def fig_reg_ff(d, g, res_1, res_2):
 
-    fig, ax = plt.subplots(nrows=1, ncols=3, squeeze=False, figsize=(12, 4))
+    if d.sig_ep.unique().shape[0] == 1:
+        fig, ax = plt.subplots(nrows=1, ncols=2, squeeze=False, figsize=(8, 4))
+    else:
+        fig, ax = plt.subplots(nrows=1,
+                               ncols=3,
+                               squeeze=False,
+                               figsize=(12, 4))
 
     sns.violinplot(data=d, x='sig_mpep_prev', y='delta_ha_init', ax=ax[0, 0])
     if g != 15:
@@ -1074,22 +1084,25 @@ def fig_reg_ff(d, g, res_1, res_2):
                     robust=False,
                     ax=ax[0, 1])
 
-    for sep in np.sort(d.sig_mpep_prev.unique()):
-        sns.regplot(data=d.loc[d['sig_mpep_prev'] == sep],
-                    x='error_ep_prev',
-                    y='delta_ha_init',
-                    label=str(sep),
-                    scatter_kws={'alpha': 0.25},
-                    robust=False,
-                    ax=ax[0, 2])
+    if d.sig_ep.unique().shape[0] != 1:
+        for sep in np.sort(d.sig_mpep_prev.unique()):
+            sns.regplot(data=d.loc[d['sig_mpep_prev'] == sep],
+                        x='error_ep_prev',
+                        y='delta_ha_init',
+                        label=str(sep),
+                        scatter_kws={'alpha': 0.25},
+                        robust=False,
+                        ax=ax[0, 2])
 
     ax[0, 0].set_ylabel('Delta Initial movement vector\n(degrees)')
     ax[0, 1].set_ylabel('')
-    ax[0, 2].set_ylabel('')
+    if d.sig_ep.unique().shape[0] != 1:
+        ax[0, 2].set_ylabel('')
 
     ax[0, 0].set_xlabel('')
     ax[0, 1].set_xlabel('Error MP')
-    ax[0, 2].set_xlabel('Error EP')
+    if d.sig_ep.unique().shape[0] != 1:
+        ax[0, 2].set_xlabel('Error EP')
 
     labels = list(string.ascii_lowercase)
     for i, x in enumerate(ax.flatten()):
@@ -1099,6 +1112,7 @@ def fig_reg_ff(d, g, res_1, res_2):
                    size=14)
 
     plt.tight_layout()
+    plt.savefig('../figures/fig_reg_ff_grp_' + str(g) + '.tif')
     plt.savefig('../figures/fig_reg_ff_grp_' + str(g) + '.pdf')
     plt.close()
 
@@ -1129,17 +1143,28 @@ def fig_reg_ff_mod(d, g, res_1, res_2):
                       color='C1',
                       label='Model 2 Beta Coefficients')
     ax[0, 1].set_yticks(y)
-    beta_labels = list(
-        reversed([
-            r'log(Trial)', r'($\sigma_{\inf} - \sigma_{H}$):$\delta_{EP}$',
-            r'($\sigma_{H} - \sigma_{M}$):$\delta_{EP}$',
-            r'($\sigma_{M} - \sigma_{L}$):$\delta_{EP}$', r'$\delta_{EP}$',
-            r'($\sigma_{\inf} - \sigma_{H}$):$\delta_{MP}$',
-            r'($\sigma_{H} - \sigma_{M}$):$\delta_{MP}$',
-            r'($\sigma_{M} - \sigma_{L}$):$\delta_{MP}$', r'$\delta_{MP}$',
-            r'$\sigma_{\inf} - \sigma_{H}$', r'$\sigma_{H} - \sigma_{M}$',
-            r'$\sigma_{M} - \sigma_{L}$', r'Intercept'
-        ]))
+    if d.sig_ep.unique().shape[0] == 1:
+        beta_labels = list(
+            reversed([
+                r'log(Trial)', r'($\sigma_{\inf} - \sigma_{H}$):$\delta_{MP}$',
+                r'($\sigma_{H} - \sigma_{M}$):$\delta_{MP}$',
+                r'($\sigma_{M} - \sigma_{L}$):$\delta_{MP}$', r'$\delta_{MP}$',
+                r'$\sigma_{\inf} - \sigma_{H}$', r'$\sigma_{H} - \sigma_{M}$',
+                r'$\sigma_{M} - \sigma_{L}$', r'Intercept'
+            ]))
+
+    else:
+        beta_labels = list(
+            reversed([
+                r'log(Trial)', r'($\sigma_{\inf} - \sigma_{H}$):$\delta_{EP}$',
+                r'($\sigma_{H} - \sigma_{M}$):$\delta_{EP}$',
+                r'($\sigma_{M} - \sigma_{L}$):$\delta_{EP}$', r'$\delta_{EP}$',
+                r'($\sigma_{\inf} - \sigma_{H}$):$\delta_{MP}$',
+                r'($\sigma_{H} - \sigma_{M}$):$\delta_{MP}$',
+                r'($\sigma_{M} - \sigma_{L}$):$\delta_{MP}$', r'$\delta_{MP}$',
+                r'$\sigma_{\inf} - \sigma_{H}$', r'$\sigma_{H} - \sigma_{M}$',
+                r'$\sigma_{M} - \sigma_{L}$', r'Intercept'
+            ]))
     # beta_labels = res_1.params.index
     ax[0, 1].set_yticklabels(beta_labels)
     ax[0, 1].legend(loc=(0, -0.4), ncols=1)
@@ -1152,6 +1177,7 @@ def fig_reg_ff_mod(d, g, res_1, res_2):
                    size=14)
 
     plt.tight_layout()
+    plt.savefig('../figures/fig_reg_ff_mod_grp_' + str(g) + '.tif')
     plt.savefig('../figures/fig_reg_ff_mod_grp_' + str(g) + '.pdf')
     plt.close()
 
@@ -1183,7 +1209,8 @@ def fig_reg_fb_mod(d, g, res_1, res_2):
     if g == 15:
         beta_labels = list(
             reversed([
-                'log(Trial)', 'sig MP:Err MP', 'Err MP', 'sig MP', 'Intercept'
+                r'log(Trial)', r'$\sigma_{MP}$:$\delta_{MP}$',
+                r'$\delta_{MP}$', r'$\sigma_{MP}$', r'$\beta_{0}$'
             ]))
     else:
         beta_labels = list(
@@ -1207,6 +1234,7 @@ def fig_reg_fb_mod(d, g, res_1, res_2):
                    size=14)
 
     plt.tight_layout()
+    plt.savefig('../figures/fig_reg_fb_mod_grp_' + str(g) + '.tif')
     plt.savefig('../figures/fig_reg_fb_mod_grp_' + str(g) + '.pdf')
     plt.close()
 
@@ -1252,35 +1280,59 @@ def fig_reg_fb(d, g, res_1, res_2):
                    size=14)
 
     plt.tight_layout()
+    plt.savefig('../figures/fig_reg_fb_grp_' + str(g) + '.tif')
     plt.savefig('../figures/fig_reg_fb_grp_' + str(g) + '.pdf')
     plt.close()
 
 
 def fit_reg_ff_1(d):
 
-    mod_formula = "ha_init ~ "
-    mod_formula += "C(sig_mpep_prev, Diff) * error_mp_prev + "
-    mod_formula += "C(sig_mpep_prev, Diff) * error_ep_prev + "
-    mod_formula += "np.log(trial) + "
-    mod_formula += "1"
+    if d.sig_ep.unique().shape[0] == 1:
+        mod_formula = "ha_init ~ "
+        mod_formula += "C(sig_mpep_prev, Diff) * error_mp_prev + "
+        mod_formula += "np.log(trial) + "
+        mod_formula += "1"
 
+    else:
+        mod_formula = "ha_init ~ "
+        mod_formula += "C(sig_mpep_prev, Diff) * error_mp_prev + "
+        mod_formula += "C(sig_mpep_prev, Diff) * error_ep_prev + "
+        mod_formula += "np.log(trial) + "
+        mod_formula += "1"
+
+    # NOTE: statsmodels
     mod = smf.ols(mod_formula, data=d)
-    res = mod.fit()
+    res_sm = mod.fit()
 
-    return res
+    # NOTE: pingouin
+    y, X = patsy.dmatrices(mod_formula, d, return_type='dataframe')
+    res_pg = pg.linear_regression(X, np.squeeze(y.to_numpy()), relimp=True)
+
+    return res_sm, res_pg
 
 
 def fit_reg_ff_2(d):
 
-    mod_formula = "delta_ha_init ~ "
-    mod_formula += "C(sig_mpep_prev, Diff) * error_mp_prev + "
-    mod_formula += "C(sig_mpep_prev, Diff) * error_ep_prev + "
-    mod_formula += "1"
+    if d.sig_ep.unique().shape[0] == 1:
+        mod_formula = "delta_ha_init ~ "
+        mod_formula += "C(sig_mpep_prev, Diff) * error_mp_prev + "
+        mod_formula += "1"
 
+    else:
+        mod_formula = "delta_ha_init ~ "
+        mod_formula += "C(sig_mpep_prev, Diff) * error_mp_prev + "
+        mod_formula += "C(sig_mpep_prev, Diff) * error_ep_prev + "
+        mod_formula += "1"
+
+    # NOTE: statsmodels
     mod = smf.ols(mod_formula, data=d)
-    res = mod.fit()
+    res_sm = mod.fit()
 
-    return res
+    # NOTE: pingouin
+    y, X = patsy.dmatrices(mod_formula, d, return_type='dataframe')
+    res_pg = pg.linear_regression(X, np.squeeze(y.to_numpy()), relimp=True)
+
+    return res_sm, res_pg
 
 
 def fit_reg_fb_1(d):
@@ -1290,10 +1342,15 @@ def fit_reg_fb_1(d):
     mod_formula += "np.log(trial) + "
     mod_formula += "1"
 
+    # NOTE: statsmodels
     mod = smf.ols(mod_formula, data=d)
-    res = mod.fit()
+    res_sm = mod.fit()
 
-    return res
+    # NOTE: pingouin
+    y, X = patsy.dmatrices(mod_formula, d, return_type='dataframe')
+    res_pg = pg.linear_regression(X, np.squeeze(y.to_numpy()), relimp=True)
+
+    return res_sm, res_pg
 
 
 def fit_reg_fb_2(d):
@@ -1302,10 +1359,15 @@ def fit_reg_fb_2(d):
     mod_formula += "C(sig_mp, Diff) * error_mp + "
     mod_formula += "1"
 
+    # NOTE: statsmodels
     mod = smf.ols(mod_formula, data=d)
-    res = mod.fit()
+    res_sm = mod.fit()
 
-    return res
+    # NOTE: pingouin
+    y, X = patsy.dmatrices(mod_formula, d, return_type='dataframe')
+    res_pg = pg.linear_regression(X, np.squeeze(y.to_numpy()), relimp=True)
+
+    return res_sm, res_pg
 
 
 def inspect_regression(g):
@@ -1318,33 +1380,155 @@ def inspect_regression(g):
                                                   'rot']].mean().reset_index()
     d = prep_data_regression(d)
 
-    res_ff_1 = fit_reg_ff_1(d)
-    res_ff_2 = fit_reg_ff_2(d)
-    fig_reg_ff(d, g, res_ff_1, res_ff_2)
-    fig_reg_ff_mod(d, g, res_ff_1, res_ff_2)
+    res_ff_1_sm, res_ff_1_pg = fit_reg_ff_1(d)
+    res_ff_2_sm, res_ff_2_pg = fit_reg_ff_2(d)
+    fig_reg_ff(d, g, res_ff_1_sm, res_ff_2_sm)
+    fig_reg_ff_mod(d, g, res_ff_1_sm, res_ff_2_sm)
 
-    res_fb_1 = fit_reg_fb_1(d)
-    res_fb_2 = fit_reg_fb_2(d)
-    fig_reg_fb(d, g, res_fb_1, res_fb_2)
-    fig_reg_fb_mod(d, g, res_fb_1, res_fb_2)
+    res_fb_1_sm, res_fb_1_pg = fit_reg_fb_1(d)
+    res_fb_2_sm, res_fb_2_pg = fit_reg_fb_2(d)
+    fig_reg_fb(d, g, res_fb_1_sm, res_fb_2_sm)
+    fig_reg_fb_mod(d, g, res_fb_1_sm, res_fb_2_sm)
 
-    stats_to_file(g, res_ff_1, res_ff_2, res_fb_1, res_fb_2)
+    # stats_to_file_sm(g, res_ff_1, res_ff_2, res_fb_1, res_fb_2)
+    stats_to_file_pg(g, res_ff_1_pg, res_ff_2_pg, res_fb_1_pg, res_fb_2_pg)
 
     inspect_hit_miss(d)
 
 
-def stats_to_file(g, res_ff_1, res_ff_2, res_fb_1, res_fb_2):
+def stats_to_file_pg(g, res_ff_1, res_ff_2, res_fb_1, res_fb_2):
+
+    res_ff_1.rename(columns={
+        'CI[2.5%]': 'CI[2.5\%]',
+        'CI[97.5%]': 'CI[97.5\%]'
+    },
+                    inplace=True)
+
+    res_ff_2.rename(columns={
+        'CI[2.5%]': 'CI[2.5\%]',
+        'CI[97.5%]': 'CI[97.5\%]'
+    },
+                    inplace=True)
+
+    res_fb_1.rename(columns={
+        'CI[2.5%]': 'CI[2.5\%]',
+        'CI[97.5%]': 'CI[97.5\%]'
+    },
+                    inplace=True)
+
+    res_fb_2.rename(columns={
+        'CI[2.5%]': 'CI[2.5\%]',
+        'CI[97.5%]': 'CI[97.5\%]'
+    },
+                    inplace=True)
 
     f = open('../stats_tables/stats_table_regression_group_' + str(g) + '.tex',
              'w')
 
-    beta_labels = list(
-        reversed([
-            'log(Trial)', '(sig 4 - sig 3):Err EP', '(sig 3 - sig 2):Err EP',
-            '(sig 2 - sig 1):Err EP', 'Err EP', '(sig 4 - sig 3):Err MP',
-            '(sig 3 - sig 2):Err MP', '(sig 2 - sig 1):Err MP', 'Err MP',
-            'sig 4 - sig 3', 'sig 3 - sig 2', 'sig 2 - sig 1', '$\beta_{0}$'
-        ]))
+    if g == 20:
+        beta_labels = list(
+            reversed([
+                r'log(Trial)', r'($\sigma_{\inf} - \sigma_{H}$):$\delta_{MP}$',
+                r'($\sigma_{H} - \sigma_{M}$):$\delta_{MP}$',
+                r'($\sigma_{M} - \sigma_{L}$):$\delta_{MP}$', r'$\delta_{MP}$',
+                r'$\sigma_{\inf} - \sigma_{H}$', r'$\sigma_{H} - \sigma_{M}$',
+                r'$\sigma_{M} - \sigma_{L}$', r'Intercept'
+            ]))
+
+    elif g == 15:
+        beta_labels = list(
+            reversed([
+                r'log(Trial)', r'($\sigma_{HH} - \sigma_{HL}$):$\delta_{EP}$',
+                r'($\sigma_{HL} - \sigma_{LH}$):$\delta_{EP}$',
+                r'($\sigma_{LH} - \sigma_{LL}$):$\delta_{EP}$', r'$\delta_{EP}$',
+                r'($\sigma_{HH} - \sigma_{HL}$):$\delta_{MP}$',
+                r'($\sigma_{HL} - \sigma_{LH}$):$\delta_{MP}$',
+                r'($\sigma_{LH} - \sigma_{LL}$):$\delta_{MP}$', r'$\delta_{MP}$',
+                r'$\sigma_{HH} - \sigma_{HL}$', r'$\sigma_{HL} - \sigma_{LH}$',
+                r'$\sigma_{LH} - \sigma_{LL}$', r'Intercept'
+            ]))
+
+    else:
+        beta_labels = list(
+            reversed([
+                r'log(Trial)', r'($\sigma_{\inf} - \sigma_{H}$):$\delta_{EP}$',
+                r'($\sigma_{H} - \sigma_{M}$):$\delta_{EP}$',
+                r'($\sigma_{M} - \sigma_{L}$):$\delta_{EP}$', r'$\delta_{EP}$',
+                r'($\sigma_{\inf} - \sigma_{H}$):$\delta_{MP}$',
+                r'($\sigma_{H} - \sigma_{M}$):$\delta_{MP}$',
+                r'($\sigma_{M} - \sigma_{L}$):$\delta_{MP}$', r'$\delta_{MP}$',
+                r'$\sigma_{\inf} - \sigma_{H}$', r'$\sigma_{H} - \sigma_{M}$',
+                r'$\sigma_{M} - \sigma_{L}$', r'Intercept'
+            ]))
+
+    res_ff_1['names'] = beta_labels
+    res_ff_2['names'] = beta_labels[:-1]
+
+    f.write('\n\n')
+    f.write(res_ff_1[[
+        'names', 'coef', 'se', 'T', 'pval', 'CI[2.5\%]', 'CI[97.5\%]', 'relimp'
+    ]].round(2).to_latex(index=False, escape=False))
+
+    f.write('\n\n')
+    f.write(res_ff_2[[
+        'names', 'coef', 'se', 'T', 'pval', 'CI[2.5\%]', 'CI[97.5\%]', 'relimp'
+    ]].round(2).to_latex(index=False, escape=False))
+
+    if g == 15:
+        beta_labels = list(
+            reversed([
+                r'log(Trial)', r'$\sigma_{MP}$:$\delta_{MP}$',
+                r'$\delta_{MP}$', r'$\sigma_{MP}$', r'$\beta_{0}$'
+            ]))
+    else:
+        beta_labels = list(
+            reversed([
+                r'log(Trial)', r'($\sigma_{\inf} - \sigma_{H}$):$\delta_{MP}$',
+                r'($\sigma_{H} - \sigma_{M}$):$\delta_{MP}$',
+                r'($\sigma_{M} - \sigma_{L}$):$\delta_{MP}$', r'$\delta_{MP}$',
+                r'$\sigma_{\inf} - \sigma_{H}$', r'$\sigma_{H} - \sigma_{M}$',
+                r'$\sigma_{M} - \sigma_{L}$', r'$\beta_{0}$'
+            ]))
+
+    res_fb_1['names'] = beta_labels
+    res_fb_2['names'] = beta_labels[:-1]
+
+    # f.write('\n\n')
+    # f.write(res_fb_1[[
+    #     'names', 'coef', 'se', 'T', 'pval', 'CI[2.5\%]', 'CI[97.5\%]', 'relimp'
+    # ]].round(2).to_latex(index=False, escape=False))
+
+    f.write('\n\n')
+    f.write(res_fb_2[[
+        'names', 'coef', 'se', 'T', 'pval', 'CI[2.5\%]', 'CI[97.5\%]', 'relimp'
+    ]].round(2).to_latex(index=False, escape=False))
+
+    f.close()
+
+
+def stats_to_file_sm(g, res_ff_1, res_ff_2, res_fb_1, res_fb_2):
+
+    f = open('../stats_tables/stats_table_regression_group_' + str(g) + '.tex',
+             'w')
+
+    if res_ff_1.params.shape[0] == 9:
+        beta_labels = list(
+            reversed([
+                r'log(Trial)', r'($\sigma_{\inf} - \sigma_{H}$):$\delta_{MP}$',
+                r'($\sigma_{H} - \sigma_{M}$):$\delta_{MP}$',
+                r'($\sigma_{M} - \sigma_{L}$):$\delta_{MP}$', r'$\delta_{MP}$',
+                r'$\sigma_{\inf} - \sigma_{H}$', r'$\sigma_{H} - \sigma_{M}$',
+                r'$\sigma_{M} - \sigma_{L}$', r'Intercept'
+            ]))
+    else:
+        beta_labels = list(
+            reversed([
+                'log(Trial)', '(sig 4 - sig 3):Err EP',
+                '(sig 3 - sig 2):Err EP', '(sig 2 - sig 1):Err EP', 'Err EP',
+                '(sig 4 - sig 3):Err MP', '(sig 3 - sig 2):Err MP',
+                '(sig 2 - sig 1):Err MP', 'Err MP', 'sig 4 - sig 3',
+                'sig 3 - sig 2', 'sig 2 - sig 1', '$\beta_{0}$'
+            ]))
 
     f.write(res_ff_1.summary(xname=beta_labels).tables[0].as_latex_tabular())
     f.write(res_ff_1.summary(xname=beta_labels).tables[1].as_latex_tabular())
@@ -1403,26 +1587,40 @@ def inspect_washout(g):
     fig_washout(d, dd, g)
 
     dd['sig_mpep_prev'] = pd.factorize(dd['sig_mpep_prev'])[0]
+
+    res = pg.rm_anova(data=dd,
+                      dv='diff',
+                      within='sig_mpep_prev',
+                      subject='subject',
+                      correction=True)
+    res.style.to_latex('../stats_tables/stats_table_washout_group_' + str(g) +
+                       '_1.tex')
+
     res = pg.pairwise_tests(data=dd,
                             dv='diff',
                             within='sig_mpep_prev',
                             subject='subject',
                             padjust='bonf')
-    res = res[['A', 'B', 'T', 'dof', 'p-corr', 'hedges']]
-    res.style.to_latex('../stats_tables/stats_table_washout_group_' + str(g) +
-                       '.tex')
+    res = res[['A', 'B', 'T', 'dof', 'p-corr', 'hedges']].round(2)
+    res.style.format(
+        precision=2).to_latex('../stats_tables/stats_table_washout_group_' +
+                              str(g) + '_2.tex')
 
 
 def compute_washout_diff(d):
 
-    wash = d.loc[(d['phase'] == 'washout') & (d['trial'] < 190),
-                 'ha_init'].mean()
+    n_adapt = 10
+    n_wash = 3
+
+    wash = d.loc[(d['phase'] == 'washout')
+                 & (d['trial'] < 180 + n_wash + 1), 'ha_init'].mean()
 
     x = {'sig_mpep_prev': [], 'diff': []}
     for smpep in d['sig_mpep_prev'].unique():
 
         if smpep != (5, 5):
-            adapt = d.loc[(d['phase'] == 'adaptation') & (d['trial'] > 170)
+            adapt = d.loc[(d['phase'] == 'adaptation')
+                          & (d['trial'] > 180 - n_adapt)
                           & (d['sig_mpep_prev'] == smpep), 'ha_init'].mean()
 
             x['sig_mpep_prev'].append(smpep)
@@ -1532,6 +1730,7 @@ def fig_washout(d, dd, g):
                    size=14)
 
     plt.tight_layout()
+    plt.savefig('../figures/fig_wash_grp_' + str(g) + '.tif')
     plt.savefig('../figures/fig_wash_grp_' + str(g) + '.pdf')
     plt.close()
 
@@ -1608,3 +1807,45 @@ def inspect_model_stats():
         'A', 'B', 'mean(A)', 'std(A)', 'mean(B)', 'std(B)', 'T', 'dof',
         'p-unc', 'hedges'
     ]].round(2).style.to_latex())
+
+    # NOTE: rank-based analysis
+    def rank_models(x):
+        x = x.sort_values(by='bic')
+        x['rank'] = np.arange(1, x.shape[0] + 1, 1)
+        return x
+
+    rank_table = []
+    for g in [20, 19, 15]:
+        dd = d[d['group'] == g]
+        dd = dd.groupby(['subject']).apply(rank_models).reset_index(drop=True)
+        dd = dd.sort_values(['model_class', 'model_state', 'model_bound'])
+        rank_table.append(pd.crosstab(dd['model'], dd['rank']))
+
+    fig, ax = plt.subplots(1, 3, squeeze=False, figsize=(12, 4))
+    cm = sns.color_palette("Blues", as_cmap=True)
+    sns.heatmap(rank_table[0],
+                ax=ax[0, 0],
+                annot=True,
+                cbar=False,
+                cmap=sns.color_palette("Blues", as_cmap=True))
+    sns.heatmap(rank_table[1],
+                ax=ax[0, 1],
+                annot=True,
+                cbar=False,
+                cmap=sns.color_palette("Greens", as_cmap=True))
+    sns.heatmap(rank_table[2],
+                ax=ax[0, 2],
+                annot=True,
+                cbar=False,
+                cmap=sns.color_palette("Reds", as_cmap=True))
+    ax[0, 1].set_yticks([])
+    ax[0, 2].set_yticks([])
+    ax[0, 1].set_ylabel('')
+    ax[0, 2].set_ylabel('')
+    ax[0, 0].set_title('Experiment 1')
+    ax[0, 1].set_title('Experiment 2')
+    ax[0, 2].set_title('Experiment 3')
+    plt.tight_layout()
+    plt.savefig('../figures/fig_model_rank.tif')
+    plt.savefig('../figures/fig_model_rank.pdf')
+    plt.close()

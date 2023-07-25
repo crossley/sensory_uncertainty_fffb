@@ -7,6 +7,8 @@ import seaborn as sns
 from scipy.optimize import differential_evolution, LinearConstraint
 import pingouin as pg
 import statsmodels.formula.api as smf
+import statsmodels.api as sm
+import patsy
 from patsy.contrasts import Diff
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 plt.rcParams['text.usetex'] = False

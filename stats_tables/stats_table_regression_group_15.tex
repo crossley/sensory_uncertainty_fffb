@@ -1,171 +1,53 @@
-\begin{center}
-\begin{tabular}{lclc}
+
+
+\begin{tabular}{lrrrrrrr}
 \toprule
-\textbf{Dep. Variable:}    &     ha\_init     & \textbf{  R-squared:         } &    0.922  \\
-\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &    0.917  \\
-\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &    163.2  \\
-\textbf{Date:}             & Wed, 22 Mar 2023 & \textbf{  Prob (F-statistic):} & 7.56e-85  \\
-\textbf{Time:}             &     08:44:45     & \textbf{  Log-Likelihood:    } &  -147.16  \\
-\textbf{No. Observations:} &         178      & \textbf{  AIC:               } &    320.3  \\
-\textbf{Df Residuals:}     &         165      & \textbf{  BIC:               } &    361.7  \\
-\textbf{Df Model:}         &          12      & \textbf{                     } &           \\
-\textbf{Covariance Type:}  &    nonrobust     & \textbf{                     } &           \\
-\bottomrule
-\end{tabular}
-%\caption{OLS Regression Results}
-\end{center}\begin{center}
-\begin{tabular}{lcccccc}
-\toprule
-                                & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$> |$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
+                                      names &  coef &   se &      T &  pval &  CI[2.5\%] &  CI[97.5\%] &  relimp \\
 \midrule
-\textbf{\$eta\_{0}\$}          &       2.9651  &        0.228     &    13.001  &         0.000        &        2.515    &        3.415     \\
-\textbf{sig 2 - sig 1}          &      -2.4514  &        0.126     &   -19.391  &         0.000        &       -2.701    &       -2.202     \\
-\textbf{sig 3 - sig 2}          &       2.2069  &        0.299     &     7.368  &         0.000        &        1.616    &        2.798     \\
-\textbf{sig 4 - sig 3}          &      -2.1963  &        0.380     &    -5.785  &         0.000        &       -2.946    &       -1.447     \\
-\textbf{Err MP}                 &       0.0060  &        0.027     &     0.220  &         0.826        &       -0.048    &        0.060     \\
-\textbf{(sig 2 - sig 1):Err MP} &      -0.0535  &        0.043     &    -1.253  &         0.212        &       -0.138    &        0.031     \\
-\textbf{(sig 3 - sig 2):Err MP} &       0.0067  &        0.078     &     0.085  &         0.932        &       -0.148    &        0.161     \\
-\textbf{(sig 4 - sig 3):Err MP} &       0.0567  &        0.097     &     0.583  &         0.561        &       -0.135    &        0.249     \\
-\textbf{Err EP}                 &      -0.0600  &        0.115     &    -0.521  &         0.603        &       -0.287    &        0.167     \\
-\textbf{(sig 2 - sig 1):Err EP} &       0.2375  &        0.326     &     0.729  &         0.467        &       -0.406    &        0.880     \\
-\textbf{(sig 3 - sig 2):Err EP} &      -0.0714  &        0.338     &    -0.211  &         0.833        &       -0.739    &        0.596     \\
-\textbf{(sig 4 - sig 3):Err EP} &      -0.1641  &        0.327     &    -0.502  &         0.616        &       -0.810    &        0.481     \\
-\textbf{log(Trial)}             &       1.7226  &        0.051     &    33.815  &         0.000        &        1.622    &        1.823     \\
+                                  Intercept &  2.97 & 0.23 &  13.00 &  0.00 &       2.51 &        3.42 &     NaN \\
+                $\sigma_{LH} - \sigma_{LL}$ & -2.45 & 0.13 & -19.39 &  0.00 &      -2.70 &       -2.20 &    0.16 \\
+                $\sigma_{HL} - \sigma_{LH}$ &  2.21 & 0.30 &   7.37 &  0.00 &       1.62 &        2.80 &    0.02 \\
+                $\sigma_{HH} - \sigma_{HL}$ & -2.20 & 0.38 &  -5.79 &  0.00 &      -2.95 &       -1.45 &    0.06 \\
+                              $\delta_{MP}$ &  0.01 & 0.03 &   0.22 &  0.83 &      -0.05 &        0.06 &    0.02 \\
+($\sigma_{LH} - \sigma_{LL}$):$\delta_{MP}$ & -0.05 & 0.04 &  -1.25 &  0.21 &      -0.14 &        0.03 &    0.00 \\
+($\sigma_{HL} - \sigma_{LH}$):$\delta_{MP}$ &  0.01 & 0.08 &   0.09 &  0.93 &      -0.15 &        0.16 &    0.01 \\
+($\sigma_{HH} - \sigma_{HL}$):$\delta_{MP}$ &  0.06 & 0.10 &   0.58 &  0.56 &      -0.14 &        0.25 &    0.02 \\
+                              $\delta_{EP}$ & -0.06 & 0.12 &  -0.52 &  0.60 &      -0.29 &        0.17 &    0.01 \\
+($\sigma_{LH} - \sigma_{LL}$):$\delta_{EP}$ &  0.24 & 0.33 &   0.73 &  0.47 &      -0.41 &        0.88 &    0.01 \\
+($\sigma_{HL} - \sigma_{LH}$):$\delta_{EP}$ & -0.07 & 0.34 &  -0.21 &  0.83 &      -0.74 &        0.60 &    0.01 \\
+($\sigma_{HH} - \sigma_{HL}$):$\delta_{EP}$ & -0.16 & 0.33 &  -0.50 &  0.62 &      -0.81 &        0.48 &    0.05 \\
+                                 log(Trial) &  1.72 & 0.05 &  33.82 &  0.00 &       1.62 &        1.82 &    0.56 \\
 \bottomrule
 \end{tabular}
-\end{center}\begin{center}
-\begin{tabular}{lclc}
-\toprule
-\textbf{Omnibus:}       & 86.954 & \textbf{  Durbin-Watson:     } &     1.208  \\
-\textbf{Prob(Omnibus):} &  0.000 & \textbf{  Jarque-Bera (JB):  } &   652.951  \\
-\textbf{Skew:}          & -1.634 & \textbf{  Prob(JB):          } & 1.63e-142  \\
-\textbf{Kurtosis:}      & 11.795 & \textbf{  Cond. No.          } &      73.4  \\
-\bottomrule
-\end{tabular}
-\end{center}
 
 
-
-\begin{center}
-\begin{tabular}{lclc}
+\begin{tabular}{lrrrrrrr}
 \toprule
-\textbf{Dep. Variable:}    & delta\_ha\_init  & \textbf{  R-squared:         } &    0.538  \\
-\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &    0.507  \\
-\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &    17.56  \\
-\textbf{Date:}             & Wed, 22 Mar 2023 & \textbf{  Prob (F-statistic):} & 9.38e-23  \\
-\textbf{Time:}             &     08:44:45     & \textbf{  Log-Likelihood:    } &  -280.42  \\
-\textbf{No. Observations:} &         178      & \textbf{  AIC:               } &    584.8  \\
-\textbf{Df Residuals:}     &         166      & \textbf{  BIC:               } &    623.0  \\
-\textbf{Df Model:}         &          11      & \textbf{                     } &           \\
-\textbf{Covariance Type:}  &    nonrobust     & \textbf{                     } &           \\
-\bottomrule
-\end{tabular}
-%\caption{OLS Regression Results}
-\end{center}\begin{center}
-\begin{tabular}{lcccccc}
-\toprule
-                                & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$> |$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
+                                      names &  coef &   se &     T &  pval &  CI[2.5\%] &  CI[97.5\%] &  relimp \\
 \midrule
-\textbf{\$eta\_{0}\$}          &       0.4713  &        0.209     &     2.252  &         0.026        &        0.058    &        0.885     \\
-\textbf{sig 2 - sig 1}          &      -2.4932  &        0.266     &    -9.360  &         0.000        &       -3.019    &       -1.967     \\
-\textbf{sig 3 - sig 2}          &       3.5155  &        0.618     &     5.689  &         0.000        &        2.295    &        4.736     \\
-\textbf{sig 4 - sig 3}          &      -2.9353  &        0.794     &    -3.698  &         0.000        &       -4.502    &       -1.368     \\
-\textbf{Err MP}                 &      -0.2387  &        0.056     &    -4.283  &         0.000        &       -0.349    &       -0.129     \\
-\textbf{(sig 2 - sig 1):Err MP} &      -0.0335  &        0.090     &    -0.372  &         0.710        &       -0.211    &        0.144     \\
-\textbf{(sig 3 - sig 2):Err MP} &      -0.3414  &        0.164     &    -2.088  &         0.038        &       -0.664    &       -0.019     \\
-\textbf{(sig 4 - sig 3):Err MP} &       0.2658  &        0.204     &     1.303  &         0.194        &       -0.137    &        0.668     \\
-\textbf{Err EP}                 &       0.5763  &        0.242     &     2.382  &         0.018        &        0.099    &        1.054     \\
-\textbf{(sig 2 - sig 1):Err EP} &      -0.2656  &        0.685     &    -0.388  &         0.699        &       -1.618    &        1.087     \\
-\textbf{(sig 3 - sig 2):Err EP} &       1.3272  &        0.706     &     1.879  &         0.062        &       -0.067    &        2.722     \\
-\textbf{(sig 4 - sig 3):Err EP} &      -0.8292  &        0.684     &    -1.213  &         0.227        &       -2.179    &        0.521     \\
+                                  Intercept &  0.47 & 0.21 &  2.25 &  0.03 &       0.06 &        0.88 &     NaN \\
+                $\sigma_{LH} - \sigma_{LL}$ & -2.49 & 0.27 & -9.36 &  0.00 &      -3.02 &       -1.97 &    0.23 \\
+                $\sigma_{HL} - \sigma_{LH}$ &  3.52 & 0.62 &  5.69 &  0.00 &       2.30 &        4.74 &    0.05 \\
+                $\sigma_{HH} - \sigma_{HL}$ & -2.94 & 0.79 & -3.70 &  0.00 &      -4.50 &       -1.37 &    0.08 \\
+                              $\delta_{MP}$ & -0.24 & 0.06 & -4.28 &  0.00 &      -0.35 &       -0.13 &    0.05 \\
+($\sigma_{LH} - \sigma_{LL}$):$\delta_{MP}$ & -0.03 & 0.09 & -0.37 &  0.71 &      -0.21 &        0.14 &    0.00 \\
+($\sigma_{HL} - \sigma_{LH}$):$\delta_{MP}$ & -0.34 & 0.16 & -2.09 &  0.04 &      -0.66 &       -0.02 &    0.01 \\
+($\sigma_{HH} - \sigma_{HL}$):$\delta_{MP}$ &  0.27 & 0.20 &  1.30 &  0.19 &      -0.14 &        0.67 &    0.02 \\
+                              $\delta_{EP}$ &  0.58 & 0.24 &  2.38 &  0.02 &       0.10 &        1.05 &    0.02 \\
+($\sigma_{LH} - \sigma_{LL}$):$\delta_{EP}$ & -0.27 & 0.69 & -0.39 &  0.70 &      -1.62 &        1.09 &    0.01 \\
+($\sigma_{HL} - \sigma_{LH}$):$\delta_{EP}$ &  1.33 & 0.71 &  1.88 &  0.06 &      -0.07 &        2.72 &    0.01 \\
+($\sigma_{HH} - \sigma_{HL}$):$\delta_{EP}$ & -0.83 & 0.68 & -1.21 &  0.23 &      -2.18 &        0.52 &    0.06 \\
 \bottomrule
 \end{tabular}
-\end{center}\begin{center}
-\begin{tabular}{lclc}
-\toprule
-\textbf{Omnibus:}       & 27.801 & \textbf{  Durbin-Watson:     } &    2.129  \\
-\textbf{Prob(Omnibus):} &  0.000 & \textbf{  Jarque-Bera (JB):  } &    7.773  \\
-\textbf{Skew:}          &  0.144 & \textbf{  Prob(JB):          } &   0.0205  \\
-\textbf{Kurtosis:}      &  2.018 & \textbf{  Cond. No.          } &     66.4  \\
-\bottomrule
-\end{tabular}
-\end{center}
 
 
-
-\begin{center}
-\begin{tabular}{lclc}
+\begin{tabular}{lrrrrrrr}
 \toprule
-\textbf{Dep. Variable:}    &     ha\_end      & \textbf{  R-squared:         } &    0.797  \\
-\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &    0.792  \\
-\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &    169.9  \\
-\textbf{Date:}             & Wed, 22 Mar 2023 & \textbf{  Prob (F-statistic):} & 8.36e-59  \\
-\textbf{Time:}             &     08:44:45     & \textbf{  Log-Likelihood:    } &  -321.41  \\
-\textbf{No. Observations:} &         178      & \textbf{  AIC:               } &    652.8  \\
-\textbf{Df Residuals:}     &         173      & \textbf{  BIC:               } &    668.7  \\
-\textbf{Df Model:}         &           4      & \textbf{                     } &           \\
-\textbf{Covariance Type:}  &    nonrobust     & \textbf{                     } &           \\
-\bottomrule
-\end{tabular}
-%\caption{OLS Regression Results}
-\end{center}\begin{center}
-\begin{tabular}{lcccccc}
-\toprule
-                       & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$> |$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
+                      names &  coef &   se &      T &  pval &  CI[2.5\%] &  CI[97.5\%] &  relimp \\
 \midrule
-\textbf{Intercept}     &       2.6688  &        0.596     &     4.477  &         0.000        &        1.492    &        3.845     \\
-\textbf{sig MP}        &      -0.7574  &        0.241     &    -3.148  &         0.002        &       -1.232    &       -0.282     \\
-\textbf{Err MP}        &      -0.6680  &        0.027     &   -24.670  &         0.000        &       -0.721    &       -0.615     \\
-\textbf{sig MP:Err MP} &       0.2624  &        0.050     &     5.269  &         0.000        &        0.164    &        0.361     \\
-\textbf{log(Trial)}    &       1.7233  &        0.134     &    12.849  &         0.000        &        1.459    &        1.988     \\
+                $\beta_{0}$ & -0.46 & 0.07 &  -6.44 &   0.0 &      -0.61 &       -0.32 &     NaN \\
+              $\sigma_{MP}$ & -1.04 & 0.14 &  -7.26 &   0.0 &      -1.33 &       -0.76 &    0.01 \\
+              $\delta_{MP}$ & -0.76 & 0.01 & -50.92 &   0.0 &      -0.79 &       -0.73 &    0.88 \\
+$\sigma_{MP}$:$\delta_{MP}$ &  0.28 & 0.03 &   9.41 &   0.0 &       0.22 &        0.34 &    0.05 \\
 \bottomrule
 \end{tabular}
-\end{center}\begin{center}
-\begin{tabular}{lclc}
-\toprule
-\textbf{Omnibus:}       & 135.420 & \textbf{  Durbin-Watson:     } &    1.682  \\
-\textbf{Prob(Omnibus):} &   0.000 & \textbf{  Jarque-Bera (JB):  } & 2648.646  \\
-\textbf{Skew:}          &  -2.505 & \textbf{  Prob(JB):          } &     0.00  \\
-\textbf{Kurtosis:}      &  21.222 & \textbf{  Cond. No.          } &     28.3  \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-
-
-\begin{center}
-\begin{tabular}{lclc}
-\toprule
-\textbf{Dep. Variable:}    &     fb\_int      & \textbf{  R-squared:         } &     0.941  \\
-\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &     0.940  \\
-\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &     925.1  \\
-\textbf{Date:}             & Wed, 22 Mar 2023 & \textbf{  Prob (F-statistic):} & 1.18e-106  \\
-\textbf{Time:}             &     08:44:45     & \textbf{  Log-Likelihood:    } &   -230.52  \\
-\textbf{No. Observations:} &         178      & \textbf{  AIC:               } &     469.0  \\
-\textbf{Df Residuals:}     &         174      & \textbf{  BIC:               } &     481.8  \\
-\textbf{Df Model:}         &           3      & \textbf{                     } &            \\
-\textbf{Covariance Type:}  &    nonrobust     & \textbf{                     } &            \\
-\bottomrule
-\end{tabular}
-%\caption{OLS Regression Results}
-\end{center}\begin{center}
-\begin{tabular}{lcccccc}
-\toprule
-                       & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$> |$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
-\midrule
-\textbf{Intercept}     &      -0.4635  &        0.072     &    -6.441  &         0.000        &       -0.605    &       -0.321     \\
-\textbf{sig MP}        &      -1.0441  &        0.144     &    -7.255  &         0.000        &       -1.328    &       -0.760     \\
-\textbf{Err MP}        &      -0.7582  &        0.015     &   -50.917  &         0.000        &       -0.788    &       -0.729     \\
-\textbf{sig MP:Err MP} &       0.2803  &        0.030     &     9.411  &         0.000        &        0.221    &        0.339     \\
-\bottomrule
-\end{tabular}
-\end{center}\begin{center}
-\begin{tabular}{lclc}
-\toprule
-\textbf{Omnibus:}       & 296.118 & \textbf{  Durbin-Watson:     } &     1.461  \\
-\textbf{Prob(Omnibus):} &   0.000 & \textbf{  Jarque-Bera (JB):  } & 55123.626  \\
-\textbf{Skew:}          &  -7.722 & \textbf{  Prob(JB):          } &      0.00  \\
-\textbf{Kurtosis:}      &  87.817 & \textbf{  Cond. No.          } &      10.4  \\
-\bottomrule
-\end{tabular}
-\end{center}
